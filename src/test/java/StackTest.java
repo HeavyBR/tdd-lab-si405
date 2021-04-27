@@ -1,15 +1,24 @@
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import stack.Stack;
 
+import java.util.EmptyStackException;
+
 @DisplayName("Stack unit tests")
 public class StackTest {
+
+    private Stack s;
+
+    @BeforeEach
+    public void init() {
+        s = new Stack();
+    }
 
     @Test
     @DisplayName("An empty stack should have a 0 size")
     public void emptyStackSize() {
-        Stack s = new Stack();
         Assertions.assertTrue(s.isEmpty());
         Assertions.assertEquals(0, s.size());
     }
@@ -17,15 +26,14 @@ public class StackTest {
     @Test
     @DisplayName("An filled stack has to have their properly size")
     public void filledStackSize() {
-        Stack s = new Stack(10);
+        s = new Stack(10);
         Assertions.assertFalse(s.isEmpty());
         Assertions.assertEquals(10, s.size());
     }
 
     @Test
     @DisplayName("Adding an item to a stack")
-    public void addItemToStack(){
-        Stack s = new Stack<String>();
+    public void addItemToStack() {
         s.push("First item");
         Assertions.assertFalse(s.isEmpty());
         Assertions.assertEquals(1, s.size());
@@ -33,8 +41,7 @@ public class StackTest {
 
     @Test
     @DisplayName("Pop an item from a stack")
-    public void popItemFromStack(){
-        Stack s = new Stack<String>();
+    public void popItemFromStack() {
         var firstItem = "First item";
         s.push(firstItem);
         var item = s.pop();
@@ -45,7 +52,6 @@ public class StackTest {
     @Test
     @DisplayName("Peek an item from the stack")
     public void peekItemFromStack() {
-        Stack s = new Stack<String>();
         var firstItem = "First item";
         s.push(firstItem);
         var item = s.peek();
@@ -53,4 +59,19 @@ public class StackTest {
         Assertions.assertEquals(item, firstItem);
     }
 
+    @Test
+    @DisplayName("Pop an empty stack")
+    public void popEmptyStack() {
+        Assertions.assertThrows(EmptyStackException.class, () -> {
+            s.pop();
+        });
+    }
+
+    @Test
+    @DisplayName("Peek an empty stack")
+    public void peekEmptyStack() {
+        Assertions.assertThrows(EmptyStackException.class, () -> {
+            s.peek();
+        });
+    }
 }
